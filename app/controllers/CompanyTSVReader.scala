@@ -13,6 +13,7 @@ import scala.io.Source
       for {
         line <- Source.fromFile(fileName).getLines().toVector
         values = line.split("\t").map(_.trim)
+//        cleaned_name = CompanyNameCleaner.cleaningTrailingStrategy(values(1)).toString
       } yield {
           try Company(values(0).toInt, NormalizeSupport.normalize(values(1)), NormalizeSupport.normalize(values(2)), values(3), values(4), values(5))
           catch {

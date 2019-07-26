@@ -22,7 +22,8 @@ trait NormalizeSupport {
 
   def normalize(in: String): String = {
     val cleaned = in.trim.toLowerCase
-    val normalized = jnormalize(cleaned, Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}\\p{IsM}\\p{IsLm}\\p{IsSk}]+", "")
+//    val normalized = jnormalize(cleaned, Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}\\p{IsM}\\p{IsLm}\\p{IsSk}]+", "")
+    val normalized = jnormalize(cleaned, Form.NFD)
 
     normalized
       .replaceAll("'s", "")
@@ -37,6 +38,81 @@ trait NormalizeSupport {
       .replaceAll("-+", "-")
       .stripSuffix("-")
   }
+
+  def web_url_normalize(in: String): String = {
+    val cleaned = in.trim.toLowerCase
+    val normalized = jnormalize(cleaned, Form.NFD)
+
+    normalized
+      .replaceAll("http://", "")
+      .replaceAll("-", "")
+  }
 }
 
 object NormalizeSupport extends NormalizeSupport
+
+
+import java.util.regex.Pattern
+import java.util.regex.Pattern.compile
+
+object CompanyNameCleaner {
+  //TODO: Check what can be removed from here whenever we use the Lucene token filter. We may reuse also tagindexer code
+  val companyStopWords = Seq(
+    "gmbh",
+    "a.g.",
+    "ag",
+    "kg",
+    "kgaa",
+    "co",
+    "sarl",
+    "ab",
+    "s.a.",
+    "se",
+    "sa",
+    "ltd",
+    "sl",
+    "s.l.",
+    "inc",
+    "srl",
+    "s.r.l.",
+    "kft",
+    "ggmbh",
+    "gesmbh",
+    "group",
+    "m.b.h.",
+    "mbh",
+    "ges.m.b.H.",
+    "sàrl",
+    "aktiengesellschaft",
+    "handelsgesellschaft"
+  )
+
+  lazy val afterStopWordRegex = compile(
+    companyStopWords map Pattern.quote mkString ("""\b(""", "|", """)\b.*"""),
+    Pattern.CASE_INSENSITIVE
+  )
+
+  lazy val yearRegex = compile("""\b201\d\b""")
+
+  lazy val symbolsRegex = compile("""[.,\-\&\_\'\/\?\!\(\)\[\]\:\\;|\+\"\*\$%#<=@·•]+""")
+
+  def cleaningTrailingStrategy(companyName: String): Option[String] = {
+    // Remove everything after gmbh, e.g. "IBM GmbH, Deutschland" --> "IBM GmbH"
+    val removedInfoText = afterStopWordRegex.matcher(companyName).replaceFirst("$1").trim()
+    val cleanedInfoText = cleanCompanyName(removedInfoText)
+    if (cleanedInfoText.length >= 3 && !cleanedInfoText.equals(companyName)) {
+      Some(cleanedInfoText)
+    } else {
+      None
+    }
+  }
+
+  final val ContiguousSpacesRegex = """\s+""".r
+
+  private def cleanCompanyName(companyName: String): String = {
+    val step1 = yearRegex.matcher(companyName).replaceAll("")
+    val step2 = symbolsRegex.matcher(step1).replaceAll(" ")
+    val step3 = ContiguousSpacesRegex.replaceAllIn(step2, " ")
+    step3.trim()
+  }
+}

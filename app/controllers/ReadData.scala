@@ -18,8 +18,10 @@ object ReadData {
     def matchComp(): Seq[CompanyTruth] = for {
       compEntity <- compEntities
       compProfile <- compProfiles
-      if (compEntity.company_name == compProfile.company_name || (compEntity.website_url == compProfile.website_url) && !compEntity.website_url.isEmpty)}
-    yield CompanyTruth(compProfile.id, compEntity.id, compProfile.company_name)
+      if (compEntity.company_name == compProfile.company_name
+//        || (compEntity.company_name.contains(compProfile.company_name) && compEntity.country == compProfile.country)
+        || (compEntity.website_url == compProfile.website_url && compEntity.country == compProfile.country && !compEntity.website_url.isEmpty))}
+    yield CompanyTruth(compProfile.id, compEntity.id, compEntity.company_name)
 
     println("Done1")
 
@@ -29,6 +31,7 @@ object ReadData {
 
     val test = compTruth.filter(aa => {! matchedComps.exists {bb => similar (aa, bb)} })
 
+    val false_pos = matchedComps.filter(aa => {! compTruth.exists {bb => similar (aa, bb)} })
 
     println("Done")
   }
