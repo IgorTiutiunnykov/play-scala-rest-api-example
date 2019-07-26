@@ -18,9 +18,10 @@ object ReadData {
     def matchComp(): Seq[CompanyTruth] = for {
       compEntity <- compEntities
       compProfile <- compProfiles
-      if (compEntity.company_name == compProfile.company_name || compEntity.website_url == compProfile.website_url)}
+      if (compEntity.company_name == compProfile.company_name || (compEntity.website_url == compProfile.website_url) && !compEntity.website_url.isEmpty)}
     yield CompanyTruth(compProfile.id, compEntity.id, compProfile.company_name)
 
+    println("Done1")
 
     val matchedComps = matchComp
 
