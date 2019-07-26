@@ -49,6 +49,13 @@ class PostController @Inject()(cc: PostControllerComponents)(implicit ec: Execut
     }
   }
 
+//  def show_company(company_name: String): Action[AnyContent] = PostAction.async { implicit request =>
+//    logger.trace(s"show: company_name = $company_name")
+//    postResourceHandler.lookup(id).map { post =>
+//      Ok(Json.toJson(post))
+//    }
+//  }
+
   private def processJsonPost[A]()(implicit request: PostRequest[A]): Future[Result] = {
     def failure(badForm: Form[PostFormInput]) = {
       Future.successful(BadRequest(badForm.errorsAsJson))
