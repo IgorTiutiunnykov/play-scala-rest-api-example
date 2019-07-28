@@ -5,6 +5,7 @@ object ReadData {
 
     println("Prepare to read")
 
+    //        || (compEntity.company_name.contains(compProfile.company_name) && compEntity.country == compProfile.country)
 
     val compEntities = new CompanyTSVReader("company_entities.tsv").readCompanies()
     val compProfiles = new CompanyTSVReader("company_profiles.tsv").readCompanies()
@@ -13,17 +14,16 @@ object ReadData {
     def matchComp(): Seq[MatchedCompanies] = for {
       compEntity <- compEntities
       compProfile <- compProfiles
-      if (compEntity.company_name == compProfile.company_name
-        //        || (compEntity.company_name.contains(compProfile.company_name) && compEntity.country == compProfile.country)
-        || (compEntity.website_url == compProfile.website_url && compEntity.country == compProfile.country && !compEntity.website_url.isEmpty))}
-      yield MatchedCompanies(compProfile.id, compEntity.id, compEntity.company_name)
+      if (compEntity.normalizedName == compProfile.normalizedName
+        || (compEntity.websiteUrl == compProfile.websiteUrl && compEntity.country == compProfile.country && !compEntity.websiteUrl.isEmpty))}
+      yield MatchedCompanies(compProfile.id, compEntity.id, compEntity.companyName)
 
     println("Done1")
 
     val matchedComps = matchComp
 
     def similar(e: MatchedCompanies, f: MatchedCompanies) = {
-      e.id_profiles == f.id_profiles && e.id_entities == f.id_entities
+      e.idProfiles == f.idProfiles && e.idEntities == f.idEntities
     }
 
     val test = compTruth.filter(aa => {

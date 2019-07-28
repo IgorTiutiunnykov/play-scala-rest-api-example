@@ -8,6 +8,6 @@ trait TruthReader {
   def readCompaniesTruth(): Vector[MatchedCompanies]
 }
 
-case class Company(id: Int, company_name: String, website_url: String, foundation_year: String, city: String, country: String)
+case class Company(id: Int, companyName: String, websiteUrl: String, foundationYear: String, city: String, country: String, normalizedName: String)
 
-case class MatchedCompanies(id_profiles: Int, id_entities: Int, name: String)
+case class MatchedCompanies(idProfiles: Int, idEntities: Int, name: String)
