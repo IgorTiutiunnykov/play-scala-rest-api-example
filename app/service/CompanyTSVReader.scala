@@ -3,11 +3,6 @@ package service
 import scala.io.Source
 import scala.util.Try
 
-/**
-  * Implementation of [[CompanyReader]] and [[TruthReader]] responsible for reading companies data from a TSV file.
-  *
-  * @param fileName The name of the TSV file to be read.
-  */
 class CompanyTSVReader(val fileName: String) extends CompanyReader {
   def readCompanies(): Vector[Company] = {
     val bufferedSource = Source.fromFile(fileName)
