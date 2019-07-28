@@ -31,7 +31,7 @@ class TruthTSVReader(val fileName: String) extends TruthReader {
         line <- bufferedSource.getLines()
         values = line.split("\t").map(_.trim)
       } yield MatchedCompanies(values(0).toInt, values(1).toInt, "")).toVector
-    bufferedSource.close()
+    bufferedSource.close
     result
   }
 }
