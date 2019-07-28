@@ -16,12 +16,11 @@ class CompanyTSVReader(val fileName: String) extends CompanyReader {
             values = line.split("\t").map(_.trim)
             id = values(0).toInt
             name = values(1)
-            websiteUrl = Try(NormalizeSupport.normalize(values(2))).getOrElse("")
-            foundationYear = Try(NormalizeSupport.normalize(values(3))).getOrElse("")
-            city = Try(NormalizeSupport.normalize(values(4))).getOrElse("")
-            country = Try(NormalizeSupport.normalize(values(5))).getOrElse("")
-            normalizedName = NormalizeSupport.normalize(name)
-
+            websiteUrl = Try(Normalizer.webUrl(values(2))).getOrElse("")
+            foundationYear = Try(values(3)).getOrElse("")
+            city = Try(values(4)).getOrElse("")
+            country = Try(values(5)).getOrElse("")
+            normalizedName = Normalizer.companyName(name)
       }
         yield Company(id, name, websiteUrl, foundationYear, city, country, normalizedName)).toVector
     bufferedSource.close
@@ -41,5 +40,3 @@ class TruthTSVReader(val fileName: String) extends TruthReader {
     result
   }
 }
-
-
