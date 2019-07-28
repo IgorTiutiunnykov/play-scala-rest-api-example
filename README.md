@@ -44,42 +44,30 @@ and get:
 POST /v1/posts HTTP/1.1
 ```
 
+### Load Testing
 
+The best way to see what Play can do is to run a load test.  We've included Gatling in this test project for integrated load testing.
 
+Start Play in production mode, by [staging the application](https://www.playframework.com/documentation/2.5.x/Deploying) and running the play script:s
 
-Matching company entities with company profiles
-===============================================
+```bash
+sbt stage
+cd target/universal/stage
+bin/play-rest-api-example -Dplay.crypto.secret=testing
+```
 
-At XING, we have different types of information about companies. In this assignment, we analyze samples
-from two different tables that provide information about companies:
+Then you'll start the Gatling load test up (it's already integrated into the project):
 
-- `company_entities.tsv`: lists the legal company entities
-- `company_profiles.tsv`: lists the company profiles on XING
+```bash
+sbt gatling:test
+```
 
-Both tables have the following structure:
+For best results, start the gatling load test up on another machine so you do not have contending resources.  You can edit the [Gatling simulation](http://gatling.io/docs/2.2.2/general/simulation_structure.html#simulation-structure), and change the numbers as appropriate.
 
-| Column             | Description |
-|:-------------------|:------------|
-| `id`               | ID of the company entity or company profile. Careful: the entity IDs are different from the profile IDs, e.g. ID 4 in `company_entities` may refer to _XING SE_ while ID 4 in `company_profiles` may refer to _Siemens_ |
-| `company_name`     | name of the company |
-| `website_url`      | URL that may link to the company website |
-| `foundation_year`  | year when the company was founded |
-| `city`             | name of the city where the company is located |
-| `country`          | code of the country where the company is located |
+Once the test completes, you'll see an HTML file containing the load test chart:
 
-We assume that there is a 1:n relationship between company profiles and company entities, i.e. one company profile may
-refer to zero or more company entities.
+```bash
+ ./rest-api/target/gatling/gatlingspec-1472579540405/index.html
+```
 
-**Task:** Your task is to analyze the given dataset and...
-
-1. Design a lightweight algorithm that allows for matching company entities and company profiles. Scala or Java prefered, but it is up to you.
-2. Use the ground_truth.tsv to validate your algorithm. What kind of numbers would you report?
-3. Small, basic REST app to wrap your matching algorithm. It should return the matched companies given company profile data.
-
-
-## Remarks
-
-- We do not expect that you find a sophisticated, optimal solution. A lightweight, simple algorithm is perfectly fine. However, we expect that you will be able to justify why the algorithm makes sense with respect to the given data.
-- You are responsible for managing your time (e.g. if you want to invest 1 hour that's fine or if you want to invest 4 hours that's also fine)
-- Please submit your solution until 5 August 2019 9 AM, because we would like to discuss your solution in the week after that.
-
+That will contain your load test results.
