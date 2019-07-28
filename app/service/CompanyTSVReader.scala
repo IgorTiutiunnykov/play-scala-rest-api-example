@@ -1,38 +1,43 @@
 package service
 
-import controllers._
-
 import scala.io.Source
+import scala.util.Try
 
 /**
-  * Implementation of [[CompanyReader]] responsible for reading sales from a TSV file.
+  * Implementation of [[CompanyReader]] and [[TruthReader]] responsible for reading companies data from a TSV file.
   *
   * @param fileName The name of the TSV file to be read.
   */
-  class CompanyTSVReader(val fileName: String) extends CompanyReader {
-
-    def readCompanies(): Seq[Company] = {
-      val source = Source.fromFile(fileName)
-      for {
-        line <- source.getLines()
-        values = line.split("\t").map(_.trim).toVector
-//        cleaned_name = CompanyNameCleaner.cleaningTrailingStrategy(values(1)).toString
-      } yield {
-          try Company(values(0).toInt, NormalizeSupport.normalize(values(1)), NormalizeSupport.normalize(values(2)), values(3), values(4), values(5))
-          catch {
-            case _: ArrayIndexOutOfBoundsException => Company(values(0).toInt, NormalizeSupport.normalize(values(1)), "", "", "", "")
-          }
-          finally { source.close() }
+class CompanyTSVReader(val fileName: String) extends CompanyReader {
+  def readCompanies(): Vector[Company] = {
+    val bufferedSource = Source.fromFile(fileName)
+    val result =
+      (for {line <- bufferedSource.getLines()
+            values = line.split("\t").map(_.trim)
+            id = values(0).toInt
+            name = NormalizeSupport.normalize(values(1))
+            website_url = Try(NormalizeSupport.normalize(values(2))).getOrElse("")
+            foundation_year = Try(NormalizeSupport.normalize(values(3))).getOrElse("")
+            city = Try(NormalizeSupport.normalize(values(4))).getOrElse("")
+            country = Try(NormalizeSupport.normalize(values(5))).getOrElse("")
       }
-    }
+        yield Company(id, name, website_url, foundation_year, city, country)).toVector
+    bufferedSource.close
+    result
   }
+}
 
-  class TruthTSVReader(val fileName: String) extends TruthReader {
-    def readCompaniesTruth(): Seq[CompanyTruth] = {
-      val source = Source.fromFile(fileName)
-      for {
-        line <- source.getLines().toVector
+class TruthTSVReader(val fileName: String) extends TruthReader {
+  def readCompaniesTruth(): Vector[MatchedCompanies] = {
+    val bufferedSource = Source.fromFile(fileName)
+    val result =
+      (for {
+        line <- bufferedSource.getLines()
         values = line.split("\t").map(_.trim)
-      } yield CompanyTruth(values(0).toInt, values(1).toInt, "")
-    }
+      } yield MatchedCompanies(values(0).toInt, values(1).toInt, "")).toVector
+    bufferedSource.close()
+    result
   }
+}
+
+

@@ -18,11 +18,12 @@ package service
   * Java/Unicode normalizer so we have to replace them ourselves.
   */
 trait NormalizeSupport {
+
   import java.text.Normalizer.{normalize => jnormalize, _}
 
   def normalize(in: String): String = {
     val cleaned = in.trim.toLowerCase
-//    val normalized = jnormalize(cleaned, Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}\\p{IsM}\\p{IsLm}\\p{IsSk}]+", "")
+    //    val normalized = jnormalize(cleaned, Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}\\p{IsM}\\p{IsLm}\\p{IsSk}]+", "")
     val normalized = jnormalize(cleaned, Form.NFD)
 
     normalized
@@ -88,7 +89,7 @@ object CompanyNameCleaner {
   )
 
   lazy val afterStopWordRegex = compile(
-    companyStopWords map Pattern.quote mkString ("""\b(""", "|", """)\b.*"""),
+    companyStopWords map Pattern.quote mkString("""\b(""", "|", """)\b.*"""),
     Pattern.CASE_INSENSITIVE
   )
 
