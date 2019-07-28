@@ -1,4 +1,6 @@
-package controllers {
+package service
+
+import controllers._
 
 import scala.io.Source
 
@@ -31,4 +33,3 @@ import scala.io.Source
       } yield CompanyTruth(values(0).toInt, values(1).toInt, "")
     }
   }
-}

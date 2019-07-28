@@ -1,8 +1,4 @@
-package controllers
-
-import javax.swing.text.html.parser.Entity
-
-import scala.io.Source
+package service
 
 object ReadData {
   def main(args: Array[String]): Unit = {

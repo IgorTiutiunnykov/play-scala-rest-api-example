@@ -1,4 +1,4 @@
-package controllers
+package service
 
 /**
   * Performs standard Java/unicode normalization on the trimmed and lowercased form
@@ -18,7 +18,7 @@ package controllers
   * Java/Unicode normalizer so we have to replace them ourselves.
   */
 trait NormalizeSupport {
-  import java.text.Normalizer.{ normalize ⇒ jnormalize, _ }
+  import java.text.Normalizer.{normalize => jnormalize, _}
 
   def normalize(in: String): String = {
     val cleaned = in.trim.toLowerCase
