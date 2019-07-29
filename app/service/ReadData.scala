@@ -22,6 +22,8 @@ object ReadData {
 
     val matchedComps = matchComp
 
+    def getMatchedCompanies(amount: Int) = matchedComps.take(amount)
+
     def similar(e: MatchedCompanies, f: MatchedCompanies) = {
       e.idProfiles == f.idProfiles && e.idEntities == f.idEntities
     }
