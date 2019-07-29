@@ -1,4 +1,4 @@
-package service
+package models
 
 import play.api.libs.json.{JsValue, Json}
 

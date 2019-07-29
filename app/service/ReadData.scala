@@ -1,5 +1,7 @@
 package service
 
+import models.MatchedCompanies
+
 object ReadData {
   def main(args: Array[String]): Unit = {
 

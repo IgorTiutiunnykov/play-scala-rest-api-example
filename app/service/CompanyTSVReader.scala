@@ -1,5 +1,7 @@
 package service
 
+import models.{Company, CompanyReader, MatchedCompanies, TruthReader}
+
 import scala.io.Source
 import scala.util.Try
 

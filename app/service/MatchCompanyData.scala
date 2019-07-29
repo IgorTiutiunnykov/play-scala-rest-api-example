@@ -1,5 +1,7 @@
 package service
 
+import models.MatchedCompanies
+
 class MatchCompanyData(val amount: Int = 10) {
   //        || (compEntity.company_name.contains(compProfile.company_name) && compEntity.country == compProfile.country)
 
@@ -17,7 +19,7 @@ class MatchCompanyData(val amount: Int = 10) {
 
   val matchedComps = matchComp
 
-  def getMatchedCompanies = matchedComps.take(amount)
+  def getMatchedCompanies = matchedComps
 
   def similar(e: MatchedCompanies, f: MatchedCompanies) = {
     e.idProfiles == f.idProfiles && e.idEntities == f.idEntities
