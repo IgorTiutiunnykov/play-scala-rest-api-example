@@ -4,7 +4,7 @@ import play.api.mvc._
 
 class CompaniesController extends Controller{
 
-  def index = TODO
-  def show(company_name: String) = TODO
+  def index: Action[AnyContent] = TODO
+  def show(company_name: String): Action[AnyContent] = TODO
 
 }
