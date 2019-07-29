@@ -19,18 +19,16 @@ class CompaniesController @Inject()(cc: ControllerComponents) extends AbstractCo
     Ok("It's under construction")
   }
 
-//  def index: Action[AnyContent] = Action {
-//    Ok(matchedCompanies.take(10).map(x => x.asJson))
-//  }
+  //  def index: Action[AnyContent] = Action {
+  //    Ok(matchedCompanies.take(10).map(x => x.asJson))
+  //  }
 
   def index: Action[AnyContent] = Action {
     Ok(
-        Json.obj(
-          "id"-> "babba",
-          "anna"-> "aaa"
-        )
+      Json.obj(
+        "id" -> "babba",
+        "anna" -> "aaa"
+      )
     )
   }
-
-
 }
