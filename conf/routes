@@ -1,7 +1,10 @@
 GET        /                       controllers.HomeController.index
 
-->         /v1/posts               v1.post.PostRouter
-->         /v1/companies           v1.companies.CompaniesRouter
+->         /posts                  v1.post.PostRouter
+
+# Companies controller
+GET        /companies              controllers.CompaniesController.index
+GET        /companies/:company_name              controllers.CompaniesController.show(company_name: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file        controllers.Assets.at(path="/public", file)
