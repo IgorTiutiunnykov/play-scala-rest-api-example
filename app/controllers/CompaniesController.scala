@@ -23,8 +23,8 @@ class CompaniesController @Inject()(cc: ControllerComponents) extends AbstractCo
     Ok("It's under construction")
   }
 
-  def index: Action[AnyContent] = Action {
-    val json = Json.toJson(matchedCompanies.take(10))
+  def index(limit: Int): Action[AnyContent] = Action {
+    val json = Json.toJson(matchedCompanies.take(limit))
     Ok(json)
   }
 }
