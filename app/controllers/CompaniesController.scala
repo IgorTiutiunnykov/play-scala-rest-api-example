@@ -1,7 +1,8 @@
 package controllers
 
 import javax.inject.Inject
-import play.api.libs.json.Json
+import models._
+import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc._
 import service.MatchCompanyData
 
@@ -10,25 +11,20 @@ class CompaniesController @Inject()(cc: ControllerComponents) extends AbstractCo
 
   private val matchedCompanies = new MatchCompanyData().getMatchedCompanies
 
-
-  def listPlaces = Action {
-    Ok("Hey hey")
+  implicit val companyWrites: Writes[MatchedCompanies] = new Writes[MatchedCompanies] {
+    override def writes(company: MatchedCompanies): JsValue = Json.obj(
+      "idProfiles" -> company.idProfiles,
+      "idEntities" -> company.idEntities,
+      "name" -> company.name
+    )
   }
 
   def show(companyName: String): Action[AnyContent] = Action {
     Ok("It's under construction")
   }
 
-  //  def index: Action[AnyContent] = Action {
-  //    Ok(matchedCompanies.take(10).map(x => x.asJson))
-  //  }
-
   def index: Action[AnyContent] = Action {
-    Ok(
-      Json.obj(
-        "id" -> "babba",
-        "anna" -> "aaa"
-      )
-    )
+    val json = Json.toJson(matchedCompanies.take(10))
+    Ok(json)
   }
 }

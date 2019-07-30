@@ -1,5 +1,4 @@
 ->         /v1/posts                            v1.post.PostRouter
 
-GET         /places                             controllers.CompaniesController.listPlaces
 GET         /companies                          controllers.CompaniesController.index
 GET         /companies/:company_name            controllers.CompaniesController.show(company_name: String)
