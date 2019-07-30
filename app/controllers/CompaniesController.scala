@@ -20,7 +20,6 @@ class CompaniesController @Inject()(cc: ControllerComponents) extends AbstractCo
   }
 
   def show(companyName: String, limit: Int): Action[AnyContent] = Action {
-//    val json = matchedCompaniesData.getMatches(companyName)
     val json = Json.toJson(matchedCompaniesData.getMatches(companyName).take(limit))
     Ok(json)
   }
