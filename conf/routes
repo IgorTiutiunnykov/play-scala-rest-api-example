@@ -1,4 +1,3 @@
-->         /v1/posts                            v1.post.PostRouter
-
+GET         /                                   controllers.CompaniesController.index(limit: Int ?= 10)
 GET         /companies                          controllers.CompaniesController.index(limit: Int ?= 10)
-GET         /companies/:company_name            controllers.CompaniesController.show(company_name: String)
+GET         /companies/:company_name            controllers.CompaniesController.show(company_name: String, limit: Int ?= 10)

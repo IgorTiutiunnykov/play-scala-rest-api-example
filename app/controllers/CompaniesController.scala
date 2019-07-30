@@ -9,7 +9,7 @@ import service.MatchCompanyData
 
 class CompaniesController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
-  private val matchedCompanies = new MatchCompanyData().getMatchedCompanies
+  private val matchedCompaniesData = new MatchCompanyData()
 
   implicit val companyWrites: Writes[MatchedCompanies] = new Writes[MatchedCompanies] {
     override def writes(company: MatchedCompanies): JsValue = Json.obj(
@@ -19,12 +19,14 @@ class CompaniesController @Inject()(cc: ControllerComponents) extends AbstractCo
     )
   }
 
-  def show(companyName: String): Action[AnyContent] = Action {
-    Ok("It's under construction")
+  def show(companyName: String, limit: Int): Action[AnyContent] = Action {
+//    val json = matchedCompaniesData.getMatches(companyName)
+    val json = Json.toJson(matchedCompaniesData.getMatches(companyName).take(limit))
+    Ok(json)
   }
 
   def index(limit: Int): Action[AnyContent] = Action {
-    val json = Json.toJson(matchedCompanies.take(limit))
+    val json = Json.toJson(matchedCompaniesData.getMatchedCompanies.take(limit))
     Ok(json)
   }
 }

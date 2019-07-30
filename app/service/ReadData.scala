@@ -38,6 +38,14 @@ object ReadData {
       !compTruth.exists { bb => similar(aa, bb) }
     })
 
+    def matchByName(e: MatchedCompanies, name: String) = {
+      e.name == name
+    }
+
+    def getMatches(name: String) = matchedComps.filter{aa => matchByName(aa, name)}
+
+    val testMatch = getMatches("KiwiSecurity Software GmbH")
+
     println("Done")
   }
 

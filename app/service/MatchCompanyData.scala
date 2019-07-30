@@ -9,7 +9,7 @@ class MatchCompanyData(val amount: Int = 10) {
   val compProfiles = new CompanyTSVReader("company_profiles.tsv").readCompanies()
   val compTruth = new TruthTSVReader("ground_truth.tsv").readCompaniesTruth()
 
-  def matchComp(): Seq[MatchedCompanies] = for {
+  def matchComp(): Vector[MatchedCompanies] = for {
     compEntity <- compEntities
     compProfile <- compProfiles
     if (compEntity.normalizedName == compProfile.normalizedName
@@ -17,23 +17,17 @@ class MatchCompanyData(val amount: Int = 10) {
   }
     yield MatchedCompanies(compProfile.id, compEntity.id, compEntity.companyName)
 
-  val matchedComps = matchComp
+  private val matchedComps = matchComp
 
-  def getMatchedCompanies = matchedComps
+  def getMatchedCompanies: Vector[MatchedCompanies] = matchedComps
 
-  def similar(e: MatchedCompanies, f: MatchedCompanies) = {
-    e.idProfiles == f.idProfiles && e.idEntities == f.idEntities
+  def similar(companiesA: MatchedCompanies, companiesB: MatchedCompanies): Boolean = {
+    companiesA.idProfiles == companiesB.idProfiles && companiesA.idEntities == companiesB.idEntities
   }
 
-  val test = compTruth.filter(aa => {
-    !matchedComps.exists {
-      bb => similar(aa, bb)
-    }
-  })
+  def matchByName(company: MatchedCompanies, name: String): Boolean = {
+    company.name.contains(name)
+  }
 
-  val false_pos = matchedComps.filter(aa => {
-    !compTruth.exists {
-      bb => similar(aa, bb)
-    }
-  })
+  def getMatches(name: String): Vector[MatchedCompanies] = matchedComps.filter { company => matchByName(company, name) }
 }
