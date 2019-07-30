@@ -1,4 +1,4 @@
-Matching company entities with company profiles
+Matching company entities with company profiles [WIP]
 ===============================================
 
 At XING, we have different types of information about companies. In this assignment, we analyze samples
