@@ -5,8 +5,9 @@ import models._
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc._
 import service.MatchCompanyData
+import javax.inject.Singleton
 
-
+@Singleton
 class CompaniesController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
   private val matchedCompaniesData = new MatchCompanyData()
