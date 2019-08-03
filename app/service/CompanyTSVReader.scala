@@ -1,9 +1,17 @@
 package service
 
-import models.{Company, CompanyReader, MatchedCompanies, TruthReader}
+import models._
 
 import scala.io.Source
 import scala.util.Try
+
+trait CompanyReader {
+  def readCompanies(): Vector[Company]
+}
+
+trait TruthReader {
+  def readCompaniesTruth(): Vector[MatchedCompanies]
+}
 
 class CompanyTSVReader(val fileName: String) extends CompanyReader {
   def readCompanies(): Vector[Company] = {

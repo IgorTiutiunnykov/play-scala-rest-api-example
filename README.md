@@ -8,10 +8,19 @@ in terminal: sbt run
 
 It'll be two endpoints available: 
 * _localhost:9000/companies_ with default limit=10
-* _localhost:9000/companies/:company_name_ with default limit=10
+* _localhost:9000/companies/by_name _ with params:
+```aidl
+id
+company_name
+website_url
+foundation_year
+city
+country
+limit (default 10)
+```
 
 First endpoint returns all matched companies
-Second - same but with companies containing _company_name_
+Second - match company data with company_entities
 
 ## Info
 
@@ -91,3 +100,25 @@ matches with
 I wonder how and why they match?
 
 There more examples like this.
+
+## WIP
+with Levenstein
+90%
+"Vector" size = 10820  total match
+"Vector" size = 4968 - missed 
+"Vector" size = 988 - false positive
+
+80%
+"Vector" size = 20994 - total match
+"Vector" size = 4887 - missed
+"Vector" size = 11081 - false positive
+
+95%
+"Vector" size = 10438 - total match
+"Vector" size = 4991 - missed
+"Vector" size = 629 - false positive
+
+100%
+"Vector" size = 10426 - total match
+"Vector" size = 4999 - missed
+"Vector" size = 625 - false positive
