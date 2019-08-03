@@ -1,6 +1,9 @@
 package service
 
 import models.MatchedCompanies
+/* this just for testing purpose.
+and it's not taken into account for API
+ */
 
 object ReadData {
   def main(args: Array[String]): Unit = {

@@ -10,7 +10,13 @@ object Normalizer {
     cleaned.split("/").head
   }
 
-  val companyStopWords = Seq(
+  def companyName(companyName: String): String = {
+    // Remove everything after gmbh, e.g. "IBM GmbH, Deutschland" --> "IBM GmbH"
+    val removedInfoText = afterStopWordRegex.matcher(companyName).replaceFirst("$1").trim()
+    cleanCompanyName(removedInfoText)
+  }
+
+  private val companyStopWords = Seq(
     "gmbh",
     "a.g.",
     "ag",
@@ -40,22 +46,16 @@ object Normalizer {
     "handelsgesellschaft"
   )
 
-  val afterStopWordRegex = compile(
+  private val afterStopWordRegex = compile(
     companyStopWords map Pattern.quote mkString("""\b(""", "|", """)\b.*"""),
     Pattern.CASE_INSENSITIVE
   )
 
-  val yearRegex = compile("""\b201\d\b""")
+  private val yearRegex = compile("""\b201\d\b""")
 
-  val symbolsRegex = compile("""[.,\-\&\_\'\/\?\!\(\)\[\]\:\\;|\+\"\*\$%#<=@·•]+""")
+  private val symbolsRegex = compile("""[.,\-\&\_\'\/\?\!\(\)\[\]\:\\;|\+\"\*\$%#<=@·•]+""")
 
-  def companyName(companyName: String): String = {
-    // Remove everything after gmbh, e.g. "IBM GmbH, Deutschland" --> "IBM GmbH"
-    val removedInfoText = afterStopWordRegex.matcher(companyName).replaceFirst("$1").trim()
-    cleanCompanyName(removedInfoText)
-  }
-
-  val contiguousSpacesRegex = """\s+""".r
+  private val contiguousSpacesRegex = """\s+""".r
 
   private def cleanCompanyName(companyName: String): String = {
     val step1 = yearRegex.matcher(companyName).replaceAll("")
