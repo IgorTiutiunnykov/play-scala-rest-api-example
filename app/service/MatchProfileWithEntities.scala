@@ -5,7 +5,7 @@ import models.MatchedCompanies
 and it's not taken into account for API
  */
 
-object ReadData {
+object MatchProfileWithEntities {
   def main(args: Array[String]): Unit = {
 
     println("Prepare to read")
