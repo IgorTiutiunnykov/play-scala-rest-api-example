@@ -19,7 +19,7 @@ class MatchCompanyData(val amount: Int = 10) {
     compEntity <- compEntities
     compProfile <- compProfiles
     if (compEntity.normalizedName == compProfile.normalizedName
-      || (compEntity.websiteUrl == compProfile.websiteUrl && compEntity.country == compProfile.country && !compEntity.websiteUrl.isEmpty))
+      || (!compEntity.websiteUrl.isEmpty && compEntity.websiteUrl == compProfile.websiteUrl && compEntity.country == compProfile.country))
   }
     yield MatchedCompanies(compProfile.id, compEntity.id, compEntity.companyName)
 }

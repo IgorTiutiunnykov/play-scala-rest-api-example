@@ -6,7 +6,14 @@ import java.util.regex.Pattern.compile
 object Normalizer {
 
   def webUrl(in: String): String = {
-    val cleaned = in.trim.toLowerCase.replaceAll("http://", "")
+    val cleaned = in.trim.toLowerCase
+      .replaceAll("http://", "")
+      .replaceAll("https://", "")
+      .replaceAll("www.", "")
+      .replaceAll(".de", "")
+      .replaceAll(".ch", "")
+      .replaceAll(".com", "")
+      .replaceAll(".at", "")
     cleaned.split("/").head
   }
 
