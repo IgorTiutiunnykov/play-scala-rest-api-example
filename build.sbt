@@ -1,4 +1,3 @@
-import play.sbt.PlaySettings
 import sbt.Keys._
 
 lazy val GatlingTest = config("gatling") extend Test
@@ -15,6 +14,9 @@ libraryDependencies += "net.codingwell" %% "scala-guice" % "4.2.1"
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.1" % Test
 libraryDependencies += "io.gatling.highcharts" % "gatling-charts-highcharts" % "3.0.1.1" % Test
 libraryDependencies += "io.gatling" % "gatling-test-framework" % "3.0.1.1" % Test
+
+// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.0"
 
 // The Play project itself
 lazy val root = (project in file("."))
