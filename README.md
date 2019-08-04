@@ -19,6 +19,11 @@ country
 limit (default 10)
 ```
 
+Example 
+```
+curl -X GET 'http://localhost:9000/companies/by_name?id=138106&company_name=R%C3%B6dl%20Dynamics%20AG&website_url=http://www.roedl.de/dynamics&foundation_year=2000&city=M%C3%BCnster&country=DE'
+```
+
 First endpoint returns all matched companies
 Second - match company data with company_entities
 
